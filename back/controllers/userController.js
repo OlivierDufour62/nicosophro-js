@@ -61,19 +61,27 @@ exports.updateUser = async (req, res) => {
       return res.status(404).json({ message: "Invalid User id" });
     }
 
-    const User = await User.findById(id);
+    const user = await Users.findById(id);
 
-    if (!User) {
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(User);
+    res.status(200).json(user);
 
-    await User.findByIdAndUpdate(id, {
-      read: true,
-      date_read: Date.now(),
+    let salt = await bcrypt.genSalt(10);
+    let hash = await bcrypt.hash(req.body.user_password, salt);
+
+    await Users.findByIdAndUpdate(id, {
+        user_role: req.body.user_role,
+        user_name: req.body.user_name,
+        user_firstname: req.body.user_firstname,
+        user_mail: req.body.user_mail,
+        user_password: hash,
+        user_tel: req.body.user_tel,
     });
   
   } catch (err) {
+    console.log(err)
     res.status(500).json({ message: err.message });
   }
 };
