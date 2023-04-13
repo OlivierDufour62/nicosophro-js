@@ -1,5 +1,6 @@
 const express = require("express");
 const routes = require("./routes/contactRoute");
+const routesUser = require("./routes/UserRoute");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose"); // importez le module mongoose
@@ -28,6 +29,7 @@ app.use(
 );
 
 app.use(routes);
+app.use(routesUser);
 
 app.use((req, res) => {
   res.status(404);
