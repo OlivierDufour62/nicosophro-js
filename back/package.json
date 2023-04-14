@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "resetDB": "sqlite3 -init data/sqlite/nicobd.sql data/sqlite/nicodb.db .exit"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
