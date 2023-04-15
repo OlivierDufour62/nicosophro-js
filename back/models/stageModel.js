@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
-const etapeSchema = new mongoose.Schema({
+const stageSchema = new mongoose.Schema({
   name: {
     type: String,
+    default: "Étape"
   },
   num: {
     type: Number,
@@ -12,7 +13,6 @@ const etapeSchema = new mongoose.Schema({
   nametype: {
     type: String,
     lenght: 30,
-    required: true,
   },
   date_create: {
     type: Date,
@@ -20,8 +20,7 @@ const etapeSchema = new mongoose.Schema({
   },
   date_update: {
     type: Date,
-    default: Date.now,
   },
 });
 
-const Etape = mongoose.model("Etape", etapeSchema);
+module.exports = mongoose.model("Stage", stageSchema);

@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const customerSchema = new mongoose.Schema({
   lastname: {
     type: String,
@@ -44,8 +46,7 @@ const customerSchema = new mongoose.Schema({
   },
   date_update: {
     type: Date,
-    default: Date.now,
   },
 });
 
-const Customer = mongoose.model("Customer", customerSchema);
+module.exports = mongoose.model("Customer", customerSchema);
