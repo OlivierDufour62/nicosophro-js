@@ -1,5 +1,4 @@
 const Customer = require("../models/customerModel");
-const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 

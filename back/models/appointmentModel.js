@@ -6,9 +6,9 @@ const appointmentSchema = new mongoose.Schema({
     ref: "Customer",
     required: true,
   },
-  etape_id: {
+  stage_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Etape",
+    ref: "Stage",
     required: true,
   },
   date_appointment: {
@@ -19,6 +19,9 @@ const appointmentSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  date_update: {
+    type: Date,
+  },
 });
 
-const Appointment = mongoose.model("Appointment", appointmentSchema);
+module.exports = mongoose.model("Appointment", appointmentSchema);

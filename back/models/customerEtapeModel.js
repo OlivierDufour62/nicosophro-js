@@ -13,5 +13,4 @@ const customerEtapeSchema = new mongoose.Schema({
   },
 });
 
-const CustomerEtape = mongoose.model("CustomerEtape", customerEtapeSchema);
 module.exports = mongoose.model('customerEtape', customerEtapeSchema);
