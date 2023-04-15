@@ -28,11 +28,13 @@ exports.getAppointment = async (req, res, err) => {
     try {
       const appointment = await Appointment.find();
       const appointmentWithCustomers = await Promise.all(appointment.map(async (app)  => {
+
           if(ObjectId.isValid(app.customer_id) && ObjectId.isValid(app.stage_id)){
               const customer = await Customer.findById(app.customer_id);
               const stage = await Stage.findById(app.stage_id);
               return {...app._doc, customer, stage};
           }
+          
           return app;
       }));
       res.status(200).json(appointmentWithCustomers);
@@ -54,24 +56,32 @@ exports.getAppointment = async (req, res, err) => {
       }
       if(Array.isArray(appointment)){
         const appointmentWithCustomers = await Promise.all(appointment.map(async (app) => {
+
           if (ObjectId.isValid(app.customer_id) && ObjectId.isValid(app.stage_id)){
             const customer = await Customer.findById(app.customer_id);
             const stage = await Stage.findById(app.stage_id);
+
             return {...app._doc, customer, stage};
+
           }
           return app;
+
         }))
+
         res.status(200).json(appointmentWithCustomers);
       } else {
-        if (ObjectId.isValid(appointment.customer_id) && ObjectId.isValid(appointment.stage_id)){
+        if (ObjectId.isValid(appointment.customer_id) && ObjectId.isValid(appointment.stage_id)) {
+
           const customer = await Customer.findById(appointment.customer_id);
           const stage = await Stage.findById(appointment.stage_id);
           const appointmentWithCustomers = {...appointment._doc, customer, stage};
-          console.log(appointment.stage_id)
 
           res.status(200).json(appointmentWithCustomers);
+
         } else {
+
           res.status(404).json({ message: "Appointment not found" });
+
         }
       }
     } catch (err) {

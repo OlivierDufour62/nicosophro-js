@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 
-const customerEtapeSchema = new mongoose.Schema({
+const customerStageSchema = new mongoose.Schema({
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customer",
     required: true,
   },
-  etape_id: {
+  stage_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Etape",
+    ref: "Stage",
     required: true,
   },
 });
 
-module.exports = mongoose.model('customerEtape', customerEtapeSchema);
+module.exports = mongoose.model('customerStage', customerStageSchema);
