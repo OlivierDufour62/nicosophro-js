@@ -7,12 +7,11 @@ const routesAppointment = require("./routes/AppointmentRoute");
 const routesCustomerStage = require("./routes/CustomerStageRoute");
 const cors = require("cors");
 const morgan = require("morgan");
-const mongoose = require("mongoose"); // importez le module mongoose
+const mongoose = require("mongoose");
 
 const app = express();
 const port = process.env.PORT || 8000;
 
-// Connectez-vous à MongoDB
 mongoose
   .connect("mongodb://localhost:27017/nicodb", {
     useNewUrlParser: true,

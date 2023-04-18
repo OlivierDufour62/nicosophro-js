@@ -64,7 +64,7 @@ exports.getStaged = async (req, res, err) => {
           }
           return cs;
 
-        }))
+        }));
 
         res.status(200).json(stageWithCustomer);
       } else {
