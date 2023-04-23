@@ -1,6 +1,4 @@
 const Appointment = require("../models/appointmentModel");
-const Customer = require("../models/customerModel")
-const Stage = require("../models/stageModel")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -27,7 +25,10 @@ exports.createAppointment = async (req, res, err) => {
 
   exports.getAppointment = async (req, res, err) => {
     try {
-      const appointment = Appointment.find().populate("stage_id").populate("customer_id");
+      const appointment = await Appointment.find().populate([
+        { path: "customer_id" },
+        { path: "stage_id" }
+      ]);
       res.status(200).json(appointment);
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -40,7 +41,10 @@ exports.createAppointment = async (req, res, err) => {
       if (!ObjectId.isValid(id)) {
         return res.status(404).json({ message: "Invalid Customer id" });
       }
-      const appointment = Appointment.findById(id).populate("stage_id").populate("customer_id");
+      const appointment = await Appointment.findById(id).populate([
+        { path: "customer_id" },
+        { path: "stage_id" }
+      ]);
       if (!appointment) {
         return res.status(404).json({ message: "Appointment not found" });     
       }

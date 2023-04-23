@@ -1,10 +1,12 @@
 const express = require("express");
+const helmet = require('helmet');
 const routes = require("./routes/ContactRoute");
 const routesUser = require("./routes/UserRoute");
 const routesCustomer = require("./routes/CustomerRoute");
 const routesStage = require("./routes/StageRoute");
 const routesAppointment = require("./routes/AppointmentRoute");
-const routesCustomerStage = require("./routes/CustomerStageRoute");
+const routesExercise = require("./routes/ExerciseRoute");
+const routesProtocol = require("./routes/ProtocolRoute");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
@@ -27,6 +29,7 @@ mongoose
 app.use(morgan("combined"));
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
 
 app.use(
   express.urlencoded({
@@ -39,7 +42,8 @@ app.use(routesUser);
 app.use(routesCustomer);
 app.use(routesStage);
 app.use(routesAppointment);
-app.use(routesCustomerStage);
+app.use(routesExercise);
+app.use(routesProtocol);
 
 app.use((req, res) => {
   res.status(404);

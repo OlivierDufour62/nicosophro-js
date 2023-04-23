@@ -7,12 +7,26 @@ const stageSchema = new mongoose.Schema({
   },
   num: {
     type: Number,
-    lenght: 5,
     required: true,
+    validate: {
+      validator: function (value) {
+        return /\d{1,2}/.test(value);
+      },
+      message: "Name type invalide",
+    },
+    minlength: 1,
+    maxlength: 5,
   },
   nametype: {
     type: String,
-    lenght: 30,
+    validate: {
+      validator: function (value) {
+        return /^[a-zA-Z0-9\s,'-]*$/.test(value);
+      },
+      message: "Name type invalide",
+    },
+    minlength: 6,
+    maxlength: 60,
   },
   date_create: {
     type: Date,
