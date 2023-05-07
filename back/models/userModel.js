@@ -48,9 +48,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (value) {
-        return /^(?=.*[,;.:/+=%^'!])[0-9a-zA-Z]+$/.test(value);
+        return /^(?=.*[!@#$%^&()_+\-=[\]{};':"\\|,.<>/?]).+$/.test(value);
       },
-      message: "L'adresse email n'est pas valide",
+      message: "Mot de passe invalide",
     },
     minlength: 3,
     maxlength: 64,

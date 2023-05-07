@@ -1,5 +1,10 @@
 const express = require("express");
-const helmet = require('helmet');
+const helmet = require("helmet");
+const cors = require("cors");
+const morgan = require("morgan");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const loginRoute = require("./routes/LoginRoute");
 const routes = require("./routes/ContactRoute");
 const routesUser = require("./routes/UserRoute");
 const routesCustomer = require("./routes/CustomerRoute");
@@ -7,9 +12,7 @@ const routesStage = require("./routes/StageRoute");
 const routesAppointment = require("./routes/AppointmentRoute");
 const routesExercise = require("./routes/ExerciseRoute");
 const routesProtocol = require("./routes/ProtocolRoute");
-const cors = require("cors");
-const morgan = require("morgan");
-const mongoose = require("mongoose");
+require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -37,13 +40,34 @@ app.use(
   })
 );
 
-app.use(routes);
-app.use(routesUser);
-app.use(routesCustomer);
-app.use(routesStage);
-app.use(routesAppointment);
-app.use(routesExercise);
-app.use(routesProtocol);
+// Protection des routes avec JWT
+const secret = process.env.JWT_SECRET;
+
+// Middleware de vérification du token JWT
+const checkJwt = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
+
+// Routes publiques (non protégées)
+app.use("/public", routes);
+app.use(loginRoute);
+// Routes protégées
+app.use("/user", checkJwt, routesUser);
+app.use("/customer", checkJwt, routesCustomer);
+app.use("/stage", checkJwt, routesStage);
+app.use("/appointment", checkJwt, routesAppointment);
+app.use("/exercise", checkJwt, routesExercise);
+app.use("/protocol", checkJwt, routesProtocol);
 
 app.use((req, res) => {
   res.status(404);
@@ -52,9 +76,4 @@ app.use((req, res) => {
   });
 });
 
-app.listen(port, () => console.log(" listening on port " + port));
-
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  //   res.status(500).send("Something broke!");
-});
+app.listen(port, () => console.log("listening on port " + port));
