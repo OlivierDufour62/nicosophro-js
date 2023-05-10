@@ -12,6 +12,7 @@ const routesStage = require("./routes/StageRoute");
 const routesAppointment = require("./routes/AppointmentRoute");
 const routesExercise = require("./routes/ExerciseRoute");
 const routesProtocol = require("./routes/ProtocolRoute");
+const { authenticate } = require('./controllers/auth');
 require("dotenv").config();
 
 const app = express();
@@ -40,34 +41,16 @@ app.use(
   })
 );
 
-// Protection des routes avec JWT
-const secret = process.env.JWT_SECRET;
-
-// Middleware de vérification du token JWT
-const checkJwt = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-  jwt.verify(token, secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    req.user = decoded;
-    next();
-  });
-};
-
 // Routes publiques (non protégées)
 app.use("/public", routes);
 app.use(loginRoute);
 // Routes protégées
-app.use("/user", checkJwt, routesUser);
-app.use("/customer", checkJwt, routesCustomer);
-app.use("/stage", checkJwt, routesStage);
-app.use("/appointment", checkJwt, routesAppointment);
-app.use("/exercise", checkJwt, routesExercise);
-app.use("/protocol", checkJwt, routesProtocol);
+app.use("/api",authenticate, routesUser);
+app.use("/api",authenticate,routesCustomer);
+app.use("/api",authenticate, routesStage);
+app.use("/api",authenticate, routesAppointment);
+app.use("/api",authenticate, routesExercise);
+app.use("/api",authenticate, routesProtocol);
 
 app.use((req, res) => {
   res.status(404);
